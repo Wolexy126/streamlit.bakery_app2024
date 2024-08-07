@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np 
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 def load_data():
     file = 'bakerysales.csv'
@@ -76,6 +76,21 @@ except ValueError as e:
        """ Error: """ % e.reason
     )
     
+    # sales analysis
+    try:
+        daily_sales = df.groupby('date')['sales'].sum() 
+        daily_sales_df =  daily_sales.reset_index().rename(columns={'sales':"total sales"})
+        ax = daily_sales_df.plot.area(x = 'date',
+                              y='total sales')
+        st.area_chart(daily_sales_df,
+                      x = 'date',
+                      y = 'total sales')
+    except ValueError as e:
+        st.error(
+            """Error:""" % e.reason
+        )
+        
+        
     
         
         
